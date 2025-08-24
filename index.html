@@ -1,249 +1,375 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Shipping Charges Calculator</title>
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shipping Charge Calculator</title>
   <style>
-    :root { --bg:#f7f7fb; --card:#fff; --txt:#111; --primary:#1f6feb; --ok:#28a745; }
-    * { box-sizing: border-box; }
-    body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background: var(--bg); color: var(--txt); }
-    .container { max-width: 720px; margin: 0 auto; padding: 16px; }
-    .card { background: var(--card); padding: 16px; border-radius: 12px; box-shadow: 0 4px 18px rgba(0,0,0,.06); }
-    h1 { font-size: 1.35rem; margin: 0 0 8px; text-align:center; }
-    p.sub { margin:0 0 16px; text-align:center; color:#555; font-size:.95rem; }
-    label { display:block; margin-top:12px; font-weight:600; }
-    select, input[type="text"], input[type="number"], button {
-      width:100%; padding:12px; margin-top:6px; border-radius:10px; border:1px solid #dcdce0; font-size:1rem;
-      background:#fff;
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 1rem;
+      background: #f9f9f9;
     }
-    button { background: var(--primary); color:#fff; border:none; cursor:pointer; margin-top:18px; }
-    button:hover { filter: brightness(0.95); }
-    .row { display:grid; grid-template-columns: 1fr; gap:12px; }
-    @media (min-width:700px){ .row.two { grid-template-columns: 1fr 1fr; } }
-    .result { margin-top:16px; padding:12px; border-left:4px solid var(--ok); background:#eaf7ee; border-radius:8px; font-weight:600; white-space:pre-wrap; }
-    .hint { font-size:.85rem; color:#666; margin-top:6px; }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h1 {
+      font-size: 1.5rem;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    .form-group {
+      margin-top: 1rem;
+    }
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 0.25rem;
+    }
+    input, select {
+      width: 100%;
+      padding: 0.75rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 1.5rem;
+      width: 100%;
+      padding: 0.75rem;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    .result {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      background: #eef;
+      border-radius: 8px;
+      font-size: 1.1rem;
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="card">
-      <h1>Shipping Charges Calculator</h1>
-      <p class="sub">Rates + optional SAL/Air surcharge, then 18% tax</p>
+    <h1>Shipping Charge Calculator</h1>
 
+    <div class="form-group">
       <label for="product">Product</label>
-      <select id="product">
-        <option value="letters">Letters</option>
-        <option value="small_packets">Small Packets</option>
-        <option value="printed_paper">Printed Paper</option>
-        <option value="m_bag">M Bag</option>
-        <option value="postcard">Airmail Post Card</option>
-        <option value="aerogramme">Aerogramme</option>
+      <select id="product" required>
+        <option value="LETTERS">Letters</option>
+        <option value="SMALL_PACKETS">Small Packets</option>
+        <option value="PRINTED_PAPER">Printed Paper</option>
+        <option value="M_BAG">M Bag</option>
+        <option value="POSTCARD">Airmail Post Card</option>
+        <option value="AEROGRAMME">Aerogramme</option>
       </select>
-
-      <div class="row two">
-        <div>
-          <label for="country">Destination Country</label>
-          <input list="countries" id="country" placeholder="Start typing..." />
-          <datalist id="countries"></datalist>
-          <div class="hint">UPU list (exclusions applied)</div>
-        </div>
-        <div>
-          <label for="sector">Continent / Sector</label>
-          <select id="sector">
-            <option value="none">Not Applicable</option>
-            <option value="asia">Asia</option>
-            <option value="europe">Europe</option>
-            <option value="africa">Africa</option>
-            <option value="na_au">North America &amp; Australia</option>
-            <option value="sa">South America</option>
-          </select>
-          <div class="hint">Auto-filled from country; you can override</div>
-        </div>
-      </div>
-
-      <div class="row two">
-        <div>
-          <label for="mode">Delivery Mode</label>
-          <select id="mode">
-            <option value="normal">Normal (no surcharge)</option>
-            <option value="sal">SAL (Surface Airlifted)</option>
-            <option value="air">Air Mail</option>
-          </select>
-        </div>
-        <div>
-          <label for="weight">Weight (grams)</label>
-          <input type="number" id="weight" min="1" placeholder="e.g. 250" />
-        </div>
-      </div>
-
-      <button id="calcBtn">Calculate</button>
-
-      <div id="result" class="result" style="display:none"></div>
-      <div id="note" class="hint"></div>
     </div>
+
+    <div class="form-group">
+      <label for="country">Destination Country</label>
+      <select id="country" required></select>
+    </div>
+
+    <div class="form-group">
+      <label for="continent">Continent / Sector</label>
+      <input type="text" id="continent" readonly>
+    </div>
+
+    <div class="form-group">
+      <label for="mode">Delivery Mode</label>
+      <select id="mode">
+        <option value="NORMAL">Normal</option>
+        <option value="SAL">Surface Airlifted (SAL)</option>
+        <option value="AIR">Air</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="weight">Weight (grams)</label>
+      <input type="number" id="weight" min="1" required>
+    </div>
+
+    <button onclick="calculate()">Calculate</button>
+
+    <div id="result" class="result" style="display:none;"></div>
   </div>
 
-<script>
-/* -------------------------
-   Countries (UPU minus exclusions) by region
-   Sector mapping for surcharge categories:
-   - asia, europe, africa, na_au (North America & Australia), sa (South America)
-   ------------------------- */
-const ASIA = [
-  "Afghanistan","Armenia","Azerbaijan","Bahrain","Bangladesh","Bhutan","Brunei","Cambodia","China","Georgia",
-  "India","Indonesia","Japan","Jordan","Kazakhstan","Kuwait","Kyrgyzstan","Lebanon","Malaysia","Maldives",
-  "Mongolia","Myanmar","Nepal","Oman","Philippines","Qatar","Saudi Arabia","Singapore","South Korea",
-  "Sri Lanka","Tajikistan","Thailand","Turkmenistan","United Arab Emirates","Uzbekistan","Vietnam","Taiwan"
-];
+  <script>
+    // === Country to Continent Map (UPU members, excluded list removed) ===
+    const countryToContinent = {
+      "Afghanistan": "Asia",
+      "Albania": "Europe",
+      "Algeria": "Africa",
+      "Andorra": "Europe",
+      "Angola": "Africa",
+      "Argentina": "South America",
+      "Armenia": "Asia",
+      "Australia": "North America & Australia",
+      "Austria": "Europe",
+      "Azerbaijan": "Asia",
+      "Bahamas": "North America & Australia",
+      "Bahrain": "Asia",
+      "Bangladesh": "Asia",
+      "Benin": "Africa",
+      "Bhutan": "Asia",
+      "Bolivia": "South America",
+      "Bosnia and Herzegovina": "Europe",
+      "Botswana": "Africa",
+      "Brazil": "South America",
+      "Brunei": "Asia",
+      "Bulgaria": "Europe",
+      "Burkina Faso": "Africa",
+      "Burundi": "Africa",
+      "Cambodia": "Asia",
+      "Cameroon": "Africa",
+      "Canada": "North America & Australia",
+      "Cape Verde": "Africa",
+      "Central African Republic": "Africa",
+      "Chad": "Africa",
+      "Chile": "South America",
+      "China": "Asia",
+      "Colombia": "South America",
+      "Comoros": "Africa",
+      "Congo": "Africa",
+      "Costa Rica": "South America",
+      "Croatia": "Europe",
+      "Cuba": "South America",
+      "Cyprus": "Europe",
+      "Czech Republic": "Europe",
+      "Denmark": "Europe",
+      "Djibouti": "Africa",
+      "Dominican Republic": "South America",
+      "Ecuador": "South America",
+      "Egypt": "Africa",
+      "El Salvador": "South America",
+      "Equatorial Guinea": "Africa",
+      "Eritrea": "Africa",
+      "Estonia": "Europe",
+      "Eswatini": "Africa",
+      "Ethiopia": "Africa",
+      "Fiji": "North America & Australia",
+      "Finland": "Europe",
+      "France": "Europe",
+      "Gabon": "Africa",
+      "Gambia": "Africa",
+      "Georgia": "Asia",
+      "Germany": "Europe",
+      "Ghana": "Africa",
+      "Greece": "Europe",
+      "Guatemala": "South America",
+      "Guinea": "Africa",
+      "Guyana": "South America",
+      "Haiti": "South America",
+      "Honduras": "South America",
+      "Hungary": "Europe",
+      "Iceland": "Europe",
+      "India": "Asia",
+      "Indonesia": "Asia",
+      "Ireland": "Europe",
+      "Italy": "Europe",
+      "Japan": "Asia",
+      "Jordan": "Asia",
+      "Kazakhstan": "Asia",
+      "Kenya": "Africa",
+      "Kiribati": "North America & Australia",
+      "Korea (South)": "Asia",
+      "Kuwait": "Asia",
+      "Kyrgyzstan": "Asia",
+      "Latvia": "Europe",
+      "Lebanon": "Asia",
+      "Lesotho": "Africa",
+      "Liberia": "Africa",
+      "Liechtenstein": "Europe",
+      "Lithuania": "Europe",
+      "Luxembourg": "Europe",
+      "Madagascar": "Africa",
+      "Malawi": "Africa",
+      "Malaysia": "Asia",
+      "Maldives": "Asia",
+      "Mali": "Africa",
+      "Malta": "Europe",
+      "Mauritania": "Africa",
+      "Mauritius": "Africa",
+      "Mexico": "North America & Australia",
+      "Moldova": "Europe",
+      "Monaco": "Europe",
+      "Mongolia": "Asia",
+      "Montenegro": "Europe",
+      "Morocco": "Africa",
+      "Mozambique": "Africa",
+      "Myanmar": "Asia",
+      "Namibia": "Africa",
+      "Nauru": "North America & Australia",
+      "Nepal": "Asia",
+      "Netherlands": "Europe",
+      "New Zealand": "North America & Australia",
+      "Nicaragua": "South America",
+      "Niger": "Africa",
+      "Nigeria": "Africa",
+      "North Macedonia": "Europe",
+      "Norway": "Europe",
+      "Oman": "Asia",
+      "Panama": "South America",
+      "Papua New Guinea": "North America & Australia",
+      "Paraguay": "South America",
+      "Peru": "South America",
+      "Philippines": "Asia",
+      "Poland": "Europe",
+      "Portugal": "Europe",
+      "Qatar": "Asia",
+      "Romania": "Europe",
+      "Russia": "Europe",
+      "Rwanda": "Africa",
+      "Samoa": "North America & Australia",
+      "San Marino": "Europe",
+      "Saudi Arabia": "Asia",
+      "Senegal": "Africa",
+      "Serbia": "Europe",
+      "Seychelles": "Africa",
+      "Sierra Leone": "Africa",
+      "Singapore": "Asia",
+      "Slovakia": "Europe",
+      "Slovenia": "Europe",
+      "Solomon Islands": "North America & Australia",
+      "Somalia": "Africa",
+      "South Africa": "Africa",
+      "South Sudan": "Africa",
+      "Spain": "Europe",
+      "Sri Lanka": "Asia",
+      "Suriname": "South America",
+      "Sweden": "Europe",
+      "Switzerland": "Europe",
+      "Tajikistan": "Asia",
+      "Tanzania": "Africa",
+      "Thailand": "Asia",
+      "Togo": "Africa",
+      "Trinidad and Tobago": "South America",
+      "Tunisia": "Africa",
+      "Turkey": "Europe",
+      "Turkmenistan": "Asia",
+      "Uganda": "Africa",
+      "Ukraine": "Europe",
+      "United Arab Emirates": "Asia",
+      "United Kingdom": "Europe",
+      "United States": "North America & Australia",
+      "Uruguay": "South America",
+      "Uzbekistan": "Asia",
+      "Vanuatu": "North America & Australia",
+      "Vatican City": "Europe",
+      "Venezuela": "South America",
+      "Vietnam": "Asia",
+      "Zambia": "Africa",
+      "Zimbabwe": "Africa"
+    };
 
-const EUROPE = [
-  "Albania","Austria","Belarus","Belgium","Bosnia and Herzegovina","Bulgaria","Croatia","Cyprus",
-  "Czech Republic","Denmark","Estonia","Finland","France","Germany","Greece","Hungary","Iceland","Ireland",
-  "Italy","Latvia","Liechtenstein","Lithuania","Luxembourg","Malta","Moldova","Monaco","Montenegro",
-  "Netherlands","North Macedonia","Norway","Poland","Portugal","Romania","Russia","San Marino","Serbia",
-  "Slovakia","Slovenia","Spain","Sweden","Switzerland","Ukraine","United Kingdom","Vatican City"
-];
+    // Populate country dropdown
+    const countrySelect = document.getElementById("country");
+    Object.keys(countryToContinent).sort().forEach(c => {
+      let opt = document.createElement("option");
+      opt.value = c;
+      opt.textContent = c;
+      countrySelect.appendChild(opt);
+    });
 
-const AFRICA = [
-  "Algeria","Angola","Benin","Botswana","Burkina Faso","Burundi","Cameroon","Cape Verde","Central African Republic",
-  "Chad","Comoros","Democratic Republic of the Congo","Republic of the Congo","Djibouti","Egypt","Equatorial Guinea",
-  "Eritrea","Eswatini","Ethiopia","Gabon","Gambia","Ghana","Guinea","Ivory Coast","Kenya","Lesotho","Liberia",
-  "Madagascar","Malawi","Mali","Mauritania","Mauritius","Morocco","Mozambique","Namibia","Niger","Nigeria","Rwanda",
-  "Senegal","Seychelles","Sierra Leone","Somalia","South Africa","South Sudan","Tanzania","Togo","Tunisia","Uganda",
-  "Zambia","Zimbabwe"
-];
+    countrySelect.addEventListener("change", () => {
+      document.getElementById("continent").value = countryToContinent[countrySelect.value] || "";
+    });
 
-const NORTH_AMERICA = [
-  "Bahamas","Canada","Costa Rica","Cuba","Dominica","Dominican Republic","El Salvador","Guatemala","Haiti",
-  "Honduras","Mexico","Nicaragua","Panama","Trinidad and Tobago","United States","Aruba","Curaçao",
-  "Sint Maarten","Caribbean Netherlands"
-];
+    // Shipping calculation
+    function calculate() {
+      const product = document.getElementById("product").value;
+      const country = document.getElementById("country").value;
+      const continent = document.getElementById("continent").value;
+      const mode = document.getElementById("mode").value;
+      const weight = parseInt(document.getElementById("weight").value, 10);
+      let cost = 0;
 
-const SOUTH_AMERICA = [
-  "Argentina","Bolivia","Brazil","Chile","Colombia","Ecuador","Guyana","Paraguay","Peru","Suriname","Uruguay","Venezuela"
-];
+      if (!weight || weight <= 0) {
+        alert("Please enter a valid weight.");
+        return;
+      }
 
-const OCEANIA = [
-  "Australia","New Zealand","Fiji","Kiribati","Nauru","Papua New Guinea","Samoa","Solomon Islands","Vanuatu"
-];
+      // === Base Rates ===
+      if (product === "LETTERS") {
+        if (country === "United States") {
+          cost = weight <= 20 ? 32 : 32 + Math.ceil((weight - 20)/20) * 22;
+        } else {
+          cost = weight <= 20 ? 25 : 25 + Math.ceil((weight - 20)/20) * 15;
+        }
+      } else if (product === "SMALL_PACKETS") {
+        if (country === "United States") {
+          cost = weight <= 100 ? 115 : 115 + Math.ceil((weight - 100)/100) * 105;
+        } else {
+          cost = weight <= 100 ? 80 : 80 + Math.ceil((weight - 100)/100) * 70;
+        }
+      } else if (product === "PRINTED_PAPER") {
+        if (country === "United States") {
+          cost = weight <= 20 ? 35 : 35 + Math.ceil((weight - 20)/20) * 25;
+        } else {
+          cost = weight <= 20 ? 25 : 25 + Math.ceil((weight - 20)/20) * 15;
+        }
+      } else if (product === "M_BAG") {
+        if (weight <= 5000) {
+          cost = 700;
+        } else {
+          cost = 700 + Math.ceil((weight - 5000)/1000) * 150;
+        }
+      } else if (product === "POSTCARD") {
+        if (["Nepal","Bangladesh","Bhutan"].includes(country)) {
+          cost = 10;
+        } else {
+          cost = 15;
+        }
+      } else if (product === "AEROGRAMME") {
+        cost = 20;
+      }
 
-// Build master list and datalist (sorted)
-const COUNTRIES = [...new Set([
-  ...ASIA, ...EUROPE, ...AFRICA, ...NORTH_AMERICA, ...SOUTH_AMERICA, ...OCEANIA
-])].sort((a,b)=>a.localeCompare(b));
+      // === Add SAL surcharge ===
+      if (mode === "SAL") {
+        let salFee = 0;
+        if (continent === "Asia") salFee = 3;
+        else if (continent === "Europe") salFee = 4;
+        else if (continent === "Africa") salFee = 4;
+        else if (continent === "North America & Australia") salFee = 7;
+        else if (continent === "South America") salFee = 9;
+        cost += Math.ceil(weight / 20) * salFee;
+      }
 
-const datalist = document.getElementById('countries');
-COUNTRIES.forEach(c => {
-  const opt = document.createElement('option');
-  opt.value = c;
-  datalist.appendChild(opt);
-});
+      // === Add Air surcharge ===
+      if (mode === "AIR") {
+        let airFee = 0;
+        if (continent === "Asia") airFee = 4;
+        else if (continent === "Europe") airFee = 5;
+        else if (continent === "Africa") airFee = 5;
+        else if (continent === "North America & Australia") airFee = 8;
+        else if (continent === "South America") airFee = 10;
+        cost += Math.ceil(weight / 20) * airFee;
+      }
 
-// Auto sector from country – you can still override manually
-const sectorSelect = document.getElementById('sector');
-document.getElementById('country').addEventListener('input', e => {
-  const c = e.target.value.trim();
-  sectorSelect.value = sectorForCountry(c);
-});
+      // Add tax
+      const tax = cost * 0.18;
+      const total = cost + tax;
 
-function sectorForCountry(c) {
-  if (ASIA.includes(c)) return 'asia';
-  if (EUROPE.includes(c)) return 'europe';
-  if (AFRICA.includes(c)) return 'africa';
-  if (SOUTH_AMERICA.includes(c)) return 'sa';
-  if (NORTH_AMERICA.includes(c) || OCEANIA.includes(c)) return 'na_au';
-  return 'none';
-}
-
-// Helpers
-const ceilDiv = (num, den) => Math.max(0, Math.ceil(num / den));
-
-// Calculate button
-document.getElementById('calcBtn').addEventListener('click', calculate);
-
-function calculate() {
-  const product = document.getElementById('product').value;
-  const country = (document.getElementById('country').value || '').trim();
-  const mode = document.getElementById('mode').value; // normal | sal | air
-  const sector = document.getElementById('sector').value; // asia|europe|africa|na_au|sa|none
-  const w = parseFloat(document.getElementById('weight').value);
-  const resultEl = document.getElementById('result');
-  const noteEl = document.getElementById('note');
-
-  if (!country || !COUNTRIES.includes(country)) {
-    alert("Please choose a valid destination country from the list.");
-    return;
-  }
-  if (!(w > 0)) {
-    alert("Please enter a valid weight in grams.");
-    return;
-  }
-
-  // ---- Base rates ----
-  let base = 0;
-  const isUSA = (country === 'United States');
-
-  if (product === 'letters') {
-    // First 20 g, then each addl 20 g (up to 2000 g)
-    base = (isUSA ? 32 : 25) + 22 * ceilDiv(w - 20, 20) * (isUSA ? 1 : 0) + 15 * ceilDiv(w - 20, 20) * (!isUSA ? 1 : 0);
-  } else if (product === 'small_packets') {
-    // USA: first 100 g 115; addl 100 g 105
-    // Non-USA: first 100 g 80; addl 100 g 70  (corrected)
-    if (isUSA) {
-      base = 115 + 105 * ceilDiv(w - 100, 100);
-    } else {
-      base = 80 + 70 * ceilDiv(w - 100, 100);
+      document.getElementById("result").style.display = "block";
+      document.getElementById("result").innerHTML =
+        `<strong>Base Cost:</strong> ₹${cost.toFixed(2)}<br>
+         <strong>Tax (18%):</strong> ₹${tax.toFixed(2)}<br>
+         <strong>Total:</strong> ₹${total.toFixed(2)}`;
     }
-  } else if (product === 'printed_paper') {
-    // Only USA rates were given; apply same to all unless you have non-USA figures
-    base = 35 + 25 * ceilDiv(w - 20, 20);
-  } else if (product === 'm_bag') {
-    // Weight is in grams; <= 5 kg = 700; then each addl kg (or part) = 150 up to 30 kg
-    if (w <= 5000) base = 700;
-    else base = 700 + 150 * ceilDiv(w - 5000, 1000);
-  } else if (product === 'postcard') {
-    base = (['Pakistan','Nepal','Bangladesh','Bhutan'].includes(country)) ? 10 : 15;
-  } else if (product === 'aerogramme') {
-    base = 20;
-  }
-
-  // ---- Surcharge (based on Delivery Mode) ----
-  const salRates = { asia:3, europe:4, africa:4, na_au:7, sa:9 };
-  const airRates = { asia:4, europe:5, africa:5, na_au:8, sa:10 };
-
-  let surcharge = 0;
-  if (mode === 'sal') {
-    surcharge = (salRates[sector] || 0) * ceilDiv(w, 20);
-  } else if (mode === 'air') {
-    surcharge = (airRates[sector] || 0) * ceilDiv(w, 20);
-  }
-
-  const beforeTax = base + surcharge;
-  const total = beforeTax * 1.18;
-
-  // Output
-  resultEl.style.display = 'block';
-  resultEl.textContent =
-    `Base: ₹${base.toFixed(2)}\n` +
-    `Surcharge (${mode.toUpperCase()}${mode==='normal'?' (none)':''}${mode!=='normal' && sector!=='none' ? ' • ' + prettySector(sector) : ''}): ₹${surcharge.toFixed(2)}\n` +
-    `Subtotal: ₹${beforeTax.toFixed(2)}\n` +
-    `Total (incl. 18% tax): ₹${total.toFixed(2)}`;
-
-  // Notes / sanity checks
-  let notes = [];
-  if (['letters','small_packets','printed_paper'].includes(product) && w > 2000) {
-    notes.push('Note: slab rates are specified up to 2000 g for this product.');
-  }
-  if ((mode==='sal' || mode==='air') && sector==='none') {
-    notes.push('Tip: sector not recognized for this country — select a sector manually to apply surcharge.');
-  }
-  noteEl.textContent = notes.join(' ');
-}
-
-function prettySector(s) {
-  return {asia:'Asia', europe:'Europe', africa:'Africa', na_au:'North America & Australia', sa:'South America'}[s] || '';
-}
-</script>
+  </script>
 </body>
 </html>
+
